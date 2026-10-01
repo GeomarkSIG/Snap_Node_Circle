@@ -2,7 +2,7 @@
 name=Snap Nodes Circle
 qgisMinimumVersion=3.16
 description=Snaps together all nodes located inside an adjustable circle centred on a snapping point.
-version=0.1.0
+version=0.1.1
 author=Robin
 email=maumerobin@yahoo.fr
 about=Advanced digitizing tool. Click on a snapped point to set the centre, stretch the radius with the mouse, then click again: all nodes of the editable layers located inside the circle are moved onto the centre point. Press Esc or right-click to cancel. Each modified layer can be undone in a single step (Ctrl+Z).
@@ -15,5 +15,7 @@ icon=icon.svg
 experimental=False
 deprecated=False
 supportsQt6=True
-changelog=0.1.0
+changelog=0.1.1
+    * Security scan fix: no more try/except/continue, catch QgsCsException only.
+0.1.0
     * First release: stretchable selection circle, snaps all inner nodes onto the centre.

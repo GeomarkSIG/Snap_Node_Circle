@@ -5,6 +5,7 @@ from qgis.PyQt.QtGui import QColor
 from qgis.core import (
     Qgis,
     QgsCoordinateTransform,
+    QgsCsException,
     QgsFeatureRequest,
     QgsGeometry,
     QgsPointXY,
@@ -159,6 +160,14 @@ class SnapNodesCircleTool(QgsMapTool):
                 "No node to move (editable layers required).",
                 level=_MSG_WARN, duration=4)
 
+    @staticmethod
+    def _transform_point(transform, x, y):
+        """Transform a point, returning None when the transform fails."""
+        try:
+            return transform.transform(QgsPointXY(x, y))
+        except QgsCsException:
+            return None
+
     def _snap_layer(self, layer, map_crs, center, radius):
         ctx = QgsProject.instance().transformContext()
         to_map = QgsCoordinateTransform(layer.crs(), map_crs, ctx)
@@ -169,7 +178,7 @@ class SnapNodesCircleTool(QgsMapTool):
             bbox_map = QgsRectangle(center.x() - radius, center.y() - radius,
                                     center.x() + radius, center.y() + radius)
             bbox_l = to_layer.transformBoundingBox(bbox_map)
-        except Exception:
+        except QgsCsException:
             return 0, 0
 
         r2 = radius * radius
@@ -185,9 +194,8 @@ class SnapNodesCircleTool(QgsMapTool):
             new_geom = QgsGeometry(geom)
             idx_to_move = []
             for i, v in enumerate(geom.vertices()):
-                try:
-                    vm = to_map.transform(QgsPointXY(v.x(), v.y()))
-                except Exception:
+                vm = self._transform_point(to_map, v.x(), v.y())
+                if vm is None:
                     continue
                 dx, dy = vm.x() - center.x(), vm.y() - center.y()
                 if dx * dx + dy * dy <= r2:
