@@ -1,0 +1,19 @@
+[general]
+name=Snap Nodes Circle
+qgisMinimumVersion=3.16
+description=Accroche ensemble tous les noeuds situes dans un cercle de rayon ajustable centre sur un point d'accrochage.
+version=0.1.0
+author=Robin
+email=maumerobin@yahoo.fr
+about=Outil de numerisation avancee. Cliquez sur un point accroche (snapping) pour definir le centre, etirez le rayon avec la souris puis cliquez a nouveau : tous les noeuds des couches en edition situes dans le cercle sont deplaces sur le point central. Echap ou clic droit pour annuler. Chaque couche modifiee est annulable en une seule action (Ctrl+Z).
+tracker=https://github.com/GeomarkSIG/Snap_Node_Circle/issues
+repository=https://github.com/GeomarkSIG/Snap_Node_Circle
+homepage=https://github.com/GeomarkSIG/Snap_Node_Circle
+category=Vector
+tags=digitizing,snapping,vertex,nodes,topology,editing
+icon=icon.svg
+experimental=True
+deprecated=False
+supportsQt6=True
+changelog=0.1.0
+    * Premiere version : cercle de selection a rayon etirable, accrochage de tous les noeuds interieurs sur le centre.
