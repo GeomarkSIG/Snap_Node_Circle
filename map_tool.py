@@ -29,9 +29,9 @@ CIRCLE_SEGMENTS = 72
 
 
 class SnapNodesCircleTool(QgsMapTool):
-    """Clic 1 sur un point accroché = centre ; la souris étire le rayon ;
-    clic 2 = tous les noeuds des couches en édition dans le cercle sont
-    ramenés sur le centre."""
+    """Click 1 on a snapped point = centre; the mouse stretches the radius;
+    click 2 = all nodes of editable layers inside the circle are moved
+    onto the centre."""
 
     def __init__(self, iface):
         super().__init__(iface.mapCanvas())
@@ -46,9 +46,9 @@ class SnapNodesCircleTool(QgsMapTool):
     def activate(self):
         super().activate()
         self.iface.messageBar().pushMessage(
-            "Accrocher les noeuds",
-            "Cliquez sur un point accroché (centre), étirez le rayon, cliquez pour valider. "
-            "Echap / clic droit : annuler.",
+            "Snap nodes in circle",
+            "Click on a snapped point (centre), stretch the radius, click to confirm. "
+            "Esc / right click: cancel.",
             level=_MSG_INFO, duration=6)
 
     def deactivate(self):
@@ -93,9 +93,9 @@ class SnapNodesCircleTool(QgsMapTool):
             match = self.canvas.snappingUtils().snapToMap(e.pos())
             if not match.isValid():
                 self.iface.messageBar().pushMessage(
-                    "Accrocher les noeuds",
-                    "Aucun point d'accrochage sous le curseur : activez l'accrochage "
-                    "(Projet > Options d'accrochage).",
+                    "Snap nodes in circle",
+                    "No snapping point under the cursor: enable snapping "
+                    "(Project > Snapping Options).",
                     level=_MSG_WARN, duration=4)
                 return
             self.center = QgsPointXY(match.point())
@@ -125,7 +125,7 @@ class SnapNodesCircleTool(QgsMapTool):
             self.band.setToGeometry(geom, None)
         else:
             self.band.reset(_POLYGON)
-        self.iface.statusBarIface().showMessage("Rayon : %.4f (unités de la carte)" % radius)
+        self.iface.statusBarIface().showMessage("Radius: %.4f (map units)" % radius)
 
     # ------------------------------------------------------------------ core
     def _snap_nodes(self, center, radius):
@@ -149,14 +149,14 @@ class SnapNodesCircleTool(QgsMapTool):
         self.canvas.refresh()
         if total_nodes:
             self.iface.messageBar().pushMessage(
-                "Accrocher les noeuds",
-                "%d noeud(s) accroché(s) sur %d entité(s) (%s)."
+                "Snap nodes in circle",
+                "%d node(s) snapped on %d feature(s) (%s)."
                 % (total_nodes, total_features, ", ".join(layers_done)),
                 level=_MSG_INFO, duration=5)
         else:
             self.iface.messageBar().pushMessage(
-                "Accrocher les noeuds",
-                "Aucun noeud à déplacer (couches en édition requises).",
+                "Snap nodes in circle",
+                "No node to move (editable layers required).",
                 level=_MSG_WARN, duration=4)
 
     def _snap_layer(self, layer, map_crs, center, radius):
@@ -198,7 +198,7 @@ class SnapNodesCircleTool(QgsMapTool):
             for i in idx_to_move:
                 new_geom.moveVertex(center_l.x(), center_l.y(), i)
             if not started:
-                layer.beginEditCommand("Accrocher les noeuds dans un cercle")
+                layer.beginEditCommand("Snap nodes within a circle")
                 started = True
             if layer.changeGeometry(feat.id(), new_geom):
                 nodes_moved += len(idx_to_move)

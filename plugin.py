@@ -14,11 +14,11 @@ class SnapNodesCirclePlugin:
 
     def initGui(self):
         icon = QIcon(os.path.join(os.path.dirname(__file__), "icon.svg"))
-        self.action = QAction(icon, "Accrocher les noeuds dans un cercle",
+        self.action = QAction(icon, "Snap nodes within a circle",
                               self.iface.mainWindow())
         self.action.setCheckable(True)
-        self.action.setToolTip("Accrocher ensemble tous les noeuds situés dans un cercle "
-                               "centré sur un point d'accrochage")
+        self.action.setToolTip("Snap together all nodes inside a circle "
+                               "centred on a snapping point")
         self.action.triggered.connect(self.activate_tool)
 
         self.tool = SnapNodesCircleTool(self.iface)
